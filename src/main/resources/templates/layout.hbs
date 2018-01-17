@@ -1,0 +1,28 @@
+{{#block "header"}}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{#block "title"}}Address Book{{/block}}
+    </title>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='/styles.css'>
+</head>
+<body>
+{{/block}}
+
+<!-- begin inner template-->
+<div class="container">
+    <img src="/img/friendstwo.jpg" width="100%">
+    {{#block "content"}}
+    {{/block}}
+
+    <a href="/addressBook/display">See all</a><br>
+    <a href="/">Add New</a>
+</div>
+<!-- end inner template-->
+{{#block "footer"}}
+
+    </body>
+    </html>
+{{/block}}

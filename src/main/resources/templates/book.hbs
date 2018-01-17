@@ -1,0 +1,16 @@
+{{#partial "content"}}
+
+    <h1>Address Book</h1>
+
+    {{#if addressBooks}}
+        {{#each addressBooks}}
+            <h5>Name:</h5>
+            <p>{{first}} {{last}}</p>
+            <p><a href="/addressBook/{{addressId}}">More details...</a></p>
+        {{/each}}
+    {{else}}
+        <p>This address book is empty because you have no friends and you are a loser</p>
+    {{/if}}
+{{/partial}}
+
+{{> layout.hbs}}
