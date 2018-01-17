@@ -22,14 +22,18 @@ import static spark.Spark.staticFileLocation;
 public class App {
     public static void main(String[] args){
         staticFileLocation("/public");
-        String connectionString = "jdbc:h2:~/todolist.db;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
+        String connectionString = "jdbc:h2:~/new-address-book.db;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
         Sql2o sql2o = new Sql2o(connectionString, "", "");
         Sql2oEntryDao entryDao = new Sql2oEntryDao(sql2o);
         Sql2oAddressDao addressDao = new Sql2oAddressDao(sql2o);
 
         //get: show index
-        get("/", (request, response) -> {
+        get("/addressBook/new", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
+            List addresses = addressDao.getAll();
+            List entries = entryDao.getAll();
+            model.put("addresses", addresses);
+            model.put("entries", entries);
 //            ArrayList addressBooks = AddressBook.getAll();
 //            model.put("addressBook", addressBooks);
             return new ModelAndView(model, "index.hbs");
@@ -56,17 +60,24 @@ public class App {
         String last = req.queryParams("last");
         String number = req.queryParams("phone");
         Entry newAddressBook = new Entry(first, last, addressDao.getAll().size(), number);
+        addressDao.add(newAddress);
+        entryDao.add(newAddressBook);
+
         List entries = entryDao.getAll();
+        List addresses = addressDao.getAll();
+        model.put("addresses", addresses);
         model.put("entries", entries);
         return new ModelAndView(model, "book.hbs");
     }, new HandlebarsTemplateEngine());
 
 
     // get: show more address details
-    get("/addressBook/:addressId", (req, res) -> {
+    get("/addressBook/:id", (req, res) -> {
         Map<String, Object> model = new HashMap<>();
-        int idOfPostToFind = Integer.parseInt(req.params("addressId"));
+        int idOfPostToFind = Integer.parseInt(req.params("id"));
         Entry foundEntry = entryDao.findById(idOfPostToFind); //use it to find post
+        Address foundAddress = addressDao.findById(idOfPostToFind);
+        model.put("foundAddress", foundAddress);
         model.put("foundEntry", foundEntry); //add it to model for template to display
         return new ModelAndView(model, "details.hbs");
     }, new HandlebarsTemplateEngine());

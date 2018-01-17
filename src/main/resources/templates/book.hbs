@@ -2,11 +2,11 @@
 
     <h1>Address Book</h1>
 
-    {{#if addressBooks}}
-        {{#each addressBooks}}
+    {{#if entries}}
+        {{#each entries}}
             <h5>Name:</h5>
-            <p>{{first}} {{last}}</p>
-            <p><a href="/addressBook/{{addressId}}">More details...</a></p>
+            <p>{{firstName}} {{lastName}}</p>
+            <p><a href="/addressBook/{{id}}">More details...</a></p>
         {{/each}}
     {{else}}
         <p>This address book is empty because you have no friends and you are a loser</p>
